@@ -73,18 +73,26 @@ describe("update_quality", function() {
     });
 
     it("should have a quality of 0 when the sell_in value drops to 0 or less", function() {
-      items = [new Item(backstagePassItemName, 0, 0)];
+      items = [new Item(backstagePassItemName, 0, 5)];
       update_quality();
 
       expect(items[0].sell_in).toEqual(-1);
       expect(items[0].quality).toEqual(0);
     });
 
-    it("the quality value of an item should never exceed 50", function() {
-      items = [new Item(backstagePassItemName, 10, 50)];
+    it("the quality value of an item should never exceed 50 when quality is incrementing by one", function() {
+      items = [new Item(backstagePassItemName, 12, 50)];
       update_quality();
 
-      expect(items[0].sell_in).toEqual(9);
+      expect(items[0].sell_in).toEqual(11);
+      expect(items[0].quality).toEqual(50);
+    });
+
+    it("the quality value of an item should never exceed 50 when quality is incrementing by three", function() {
+      items = [new Item(backstagePassItemName, 2, 49)];
+      update_quality();
+
+      expect(items[0].sell_in).toEqual(1);
       expect(items[0].quality).toEqual(50);
     });
   });
