@@ -1,45 +1,21 @@
-# Gilded Rose
+# MY SOLUTION
 
-### Guidance Notes
+Approach:
 
-- Clone or fork this repo, and do this exercise in any of the available languages that you are most comfortable using.
-- There is no time limit to this exercise, but try to time box it for yourself to avoid spending an inordinate amount of effort on it.
-- A history of git commits will be very helpful when we go on to discuss the exercise.
-- This exercise is about sparking a conversation, not about the "best" technical implementation.
+    - Implement tests to capture existing functionality and mitigate against regression.
 
-### Additional notes for Junior developers
+    - Refactor code away from using nested if blocks. Main priority was to reduce duplication of business logic (e.g. checking if quality < 50), and encapsualte logic into named functions to make it more readable and extendable.
 
-- You are not required to finish this exercise.
-- Your approach to the problem is more interesting to us than a solution.
-- This is mostly a refactoring exercise - you do not need to have any reverence for the current implementation!
+    - Used a functional approach by running items through their respective updaters and then return new items with modifed properties. Every item gets assigned 'generic' updater for each property, then specific items get updaters overriden if they require it.
 
-### Requirements Specification
+    - Create new quality updater function of Conjured items
 
-Hi and welcome to team Gilded Rose. 
+How to improve:
 
-As you know, we are a small inn with a prime location in a prominent city ran by a friendly innkeeper named Allison. We also buy and sell only the finest goods. Unfortunately, our goods are constantly degrading in quality as they approach their sell by date. We have a system in place that updates our inventory for us. It was developed by a no-nonsense type named Leeroy, who has moved on to new adventures. Your task is to add the new feature to our system so that we can begin selling a new category of items. First an introduction to our system:
+    - Pass in the items array to the update_quality function and scope it so its not global. (wasnt sure if i was allowed to change the html files...)
 
-- All items have a SellIn value which denotes the number of days we have to sell the item
-- All items have a Quality value which denotes how valuable the item is
-- At the end of each day our system lowers both values for every item
+    - Split up into multiple relevant files.
 
-Pretty simple, right? Well this is where it gets interesting:
+    - Make the updater functions more generic. e.g. instead of the backstagePassItemQualityUpdater you would have a more generic updater where you pass it thresholds for the quality increment gradients so that it could be used for other similar items.
 
-- Once the sell by date has passed, Quality degrades twice as fast
-- The Quality of an item is never negative
-- "Aged Brie" actually increases in Quality the older it gets
-- The Quality of an item is never more than 50
-- "Sulfuras", being a legendary item, never has to be sold or decreases in Quality
-- "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
-- Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
-- Quality drops to 0 after the concert
-
-We have recently signed a supplier of conjured items. This requires an update to our system:
-
-```
-"Conjured" items degrade in Quality twice as fast as normal items
-```
-
-Feel free to make any changes to the UpdateQuality method and add any new code as long as everything still works correctly. However __do not alter the Item class or Items property as those belong to the goblin in the corner who will insta-rage and one-shot you as he doesn't believe in shared code ownership__ (you can make the UpdateQuality method and Items property static if you like, we'll cover for you).
-
-Just for clarification, an item can never have its Quality increase above 50, however "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
+    - Add more tests!!! to capture the more granular updater function logic.
