@@ -14,6 +14,7 @@ const MIN_QUALITY_VALUE = 0;
 const isBackstagePassItem = item => item.name.includes("Backstage passes");
 const isSulfurasItem = item => item.name.includes("Sulfuras");
 const isAgedBrieItem = item => item.name.includes("Aged Brie");
+const isConjuredItem = item => item.name.includes("Conjured");
 
 // Item modifiers
 const incrementQualityProperty = incrementValue => {
@@ -42,6 +43,7 @@ const decrementQualityProperty = decrementValue => {
 
 const decrementQualityByOne = decrementQualityProperty(1);
 const decrementQualityByTwo = decrementQualityProperty(2);
+const decrementQualityByFour = decrementQualityProperty(4);
 
 // Item specific updaters
 const genericItemQualityUpdater = item => {
@@ -50,6 +52,15 @@ const genericItemQualityUpdater = item => {
     item.sell_in <= 0
       ? decrementQualityByTwo(quality)
       : decrementQualityByOne(quality);
+  return { ...item, quality };
+};
+
+const conjuredItemQualityUpdater = item => {
+  let quality = item.quality;
+  quality =
+    item.sell_in <= 0
+      ? decrementQualityByFour(quality)
+      : decrementQualityByTwo(quality);
   return { ...item, quality };
 };
 
@@ -98,6 +109,8 @@ function update_quality() {
     } else if (isSulfurasItem(item)) {
       qualityUpdater = item => ({ ...item });
       sellInUpdater = item => ({ ...item });
+    } else if (isConjuredItem(item)) {
+      qualityUpdater = conjuredItemQualityUpdater;
     }
 
     return updateItemWith(item)(qualityUpdater, sellInUpdater);

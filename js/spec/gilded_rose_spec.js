@@ -2,6 +2,7 @@ const genericItemName = "some-item";
 const backstagePassItemName = "Backstage passes to a TAFKAL80ETC concert";
 const agedBrieItemName = "Aged Brie";
 const legendaryItemName = "Sulfuras, Hand of Ragnaros";
+const conjuredItemName = "Conjured Mana Cake";
 
 describe("update_quality", function() {
   describe("when updating generic items", () => {
@@ -104,6 +105,40 @@ describe("update_quality", function() {
 
       expect(items[0].sell_in).toEqual(0);
       expect(items[0].quality).toEqual(80);
+    });
+  });
+
+  describe("when updating Conjured items", () => {
+    it("should degrade in Quality twice as fast as generic items when sell_in is greater than 0", function() {
+      items = [
+        new Item(conjuredItemName, 3, 10),
+        new Item(genericItemName, 3, 10)
+      ];
+      update_quality();
+      const conjuredItem = items[0];
+      const genericItem = items[1];
+
+      expect(conjuredItem.sell_in).toEqual(2);
+      expect(conjuredItem.quality).toEqual(8);
+
+      expect(genericItem.sell_in).toEqual(2);
+      expect(genericItem.quality).toEqual(9);
+    });
+
+    it("should degrade in Quality twice as fast as generic items when sell_in is equal to 0", function() {
+      items = [
+        new Item(conjuredItemName, 0, 10),
+        new Item(genericItemName, 0, 10)
+      ];
+      update_quality();
+      const conjuredItem = items[0];
+      const genericItem = items[1];
+
+      expect(conjuredItem.sell_in).toEqual(-1);
+      expect(conjuredItem.quality).toEqual(6);
+
+      expect(genericItem.sell_in).toEqual(-1);
+      expect(genericItem.quality).toEqual(8);
     });
   });
 });
